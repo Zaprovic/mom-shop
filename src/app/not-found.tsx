@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const NotFoundPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
-      <div className="max-w-md space-y-6">
+    <div className="flex flex-col items-center justify-center px-4 text-center">
+      <div className="max-w-md space-y-6 pt-24">
         <div className="flex flex-col items-center justify-center gap-0">
           <div className="flex justify-center">
             <AlertTriangleIcon className="size-24 animate-pulse text-amber-500" />
