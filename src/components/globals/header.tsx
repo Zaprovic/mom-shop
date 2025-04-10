@@ -3,37 +3,43 @@ import Navbar from "./navbar";
 import NavbarIcons from "./navbar-icons";
 import AuthChecker from "./auth-checker";
 import LogoutBtn from "./logout-btn";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+import { StoreIcon } from "lucide-react";
+import { Suspense } from "react";
+import AsideMenu from "./aside-menu";
 
 const Header = () => {
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 w-full border-b px-6 py-4 backdrop-blur-sm transition-all duration-300 sm:px-8">
-      <div className="mx-auto flex max-w-7xl items-center justify-between">
-        <Link
-          href={"/"}
-          className="hidden pl-30 text-xl font-light tracking-widest transition-colors sm:block md:p-0"
-        >
-          YeseCommerce
-        </Link>
-        <Navbar />
+    <header className="bg-background/95 fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-md">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:h-18">
+        <div className="flex items-center gap-3">
+          <AsideMenu />
 
-        <div className="flex gap-3">
+          <Link
+            href="/"
+            className="flex items-center"
+            aria-label="YeseCommerce Home"
+          >
+            <StoreIcon className="h-5 w-5 sm:mr-2" />
+            <span className="hover:text-primary/90 hidden text-lg font-medium tracking-wide sm:inline-block md:text-xl">
+              YeseCommerce
+            </span>
+          </Link>
+        </div>
+
+        <div className="hidden md:block">
+          <Navbar />
+        </div>
+
+        <div className="flex items-center">
           <NavbarIcons />
-          <div className="flex items-center space-x-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <LogoutBtn />
-                </TooltipTrigger>
-                <TooltipContent>Salir</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <AuthChecker />
+
+          <div className="ml-1 hidden md:flex md:items-center">
+            <LogoutBtn />
+            <Suspense fallback={<div>Loading...</div>}>
+              <div className="ml-2">
+                <AuthChecker />
+              </div>
+            </Suspense>
           </div>
         </div>
       </div>

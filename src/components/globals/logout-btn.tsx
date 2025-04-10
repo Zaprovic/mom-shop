@@ -12,14 +12,14 @@ const LogoutBtn = () => {
   const { isAuthenticated, isLoading } = useKindeBrowserClient();
 
   if (isLoading) {
-    return <Skeleton className="size-9 rounded-full" />;
+    return <Skeleton className="h-8 w-8 rounded-md" />;
   }
 
   if (isAuthenticated) {
     return (
-      <Button variant={"ghost"} size={"icon"} className="rounded-full">
+      <Button asChild variant="ghost" size="icon" className="h-8 w-8 rounded-md">
         <LogoutLink>
-          <LogOutIcon />
+          <LogOutIcon className="h-4 w-4" />
         </LogoutLink>
       </Button>
     );
