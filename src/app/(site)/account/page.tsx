@@ -2,6 +2,14 @@ import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
 import User from "./_components/user";
 import { Suspense } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import CreateProductForm from "./_components/create-product-form";
 
 const AccountPage = async () => {
   return (
@@ -10,12 +18,22 @@ const AccountPage = async () => {
         <Suspense fallback={<div>Loading...</div>}>
           <User />
         </Suspense>
-        <Button className="w-full sm:w-auto">
-          <PlusCircleIcon className="mr-2 h-4 w-4" />
-          <span className="-tracking-wider whitespace-nowrap">
-            Agregar nuevo producto
-          </span>
-        </Button>
+        <Dialog modal>
+          <DialogTrigger asChild>
+            <Button className="w-full sm:w-auto">
+              <PlusCircleIcon className="mr-2 h-4 w-4" />
+              <span className="-tracking-wider whitespace-nowrap">
+                Agregar nuevo producto
+              </span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent >
+            <DialogHeader>
+              <DialogTitle>Agregar nuevo producto</DialogTitle>
+            </DialogHeader>
+            <CreateProductForm />
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
