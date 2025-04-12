@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import HeroSection from "./_components/01-hero-section";
-import ProductsSection from "./_components/02-product-section/02-products-section";
+import ProductsSection from "./_components/02-product-section";
 
 export default function Home() {
   return (
