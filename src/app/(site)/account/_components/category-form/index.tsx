@@ -73,8 +73,6 @@ const CategoryCreationForm = () => {
     );
   }
 
-  console.log(user.id);
-
   return (
     <div className="space-y-6">
       <div>
