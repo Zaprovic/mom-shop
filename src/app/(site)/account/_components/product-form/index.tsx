@@ -20,35 +20,39 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import TabsListComp from "./tabs-list-comp";
+import MobileStepIndicator from "./mobile-step-indicator";
+import { insertProductSchema } from "@/schemas";
+import { SelectCategoryType } from "@/types";
 
 // Define product schema for form validation
-const formSchema = z.object({
-  name: z.string().min(1, "Product name is required"),
-  price: z.coerce.number().positive("Price must be positive"),
-  brand: z.string().min(1, "Brand name is required"),
-  mainImage: z.string().min(1, "Main image URL is required"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  discountPercentage: z.coerce.number().min(0).max(100).default(0),
-  images: z.array(z.string()).default([]),
-  benefits: z.array(z.string()).default([]),
-  howToUse: z.string().optional(),
-  ingredients: z.array(z.string()).default([]),
-  inStock: z.boolean().default(true),
-  categoryIds: z.array(z.number()).min(1, "At least one category is required"),
+// const formSchema = z.object({
+//   name: z.string().min(1, "Product name is required"),
+//   price: z.coerce.number().positive("Price must be positive"),
+//   brand: z.string().min(1, "Brand name is required"),
+//   mainImage: z.string().min(1, "Main image URL is required"),
+//   description: z.string().min(10, "Description must be at least 10 characters"),
+//   discountPercentage: z.coerce.number().min(0).max(100).default(0),
+//   images: z.array(z.string()).default([]),
+//   benefits: z.array(z.string()).default([]),
+//   howToUse: z.string().optional(),
+//   ingredients: z.array(z.string()).default([]),
+//   inStock: z.boolean().default(true),
+//   categoryIds: z.array(z.number()).min(1, "At least one category is required"),
+// });
+
+const formSchema = insertProductSchema.omit({
+  userId: true,
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-// Mock categories for the example - replace with actual data fetch
-const CATEGORIES = [
-  { id: 1, name: "Skincare" },
-  { id: 2, name: "Hair Care" },
-  { id: 3, name: "Makeup" },
-  { id: 4, name: "Body Care" },
-];
+type props = {
+  categories: SelectCategoryType[];
+};
 
-const CreateProductForm = () => {
+const CreateProductForm = ({ categories: CATEGORIES }: props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState("basic");
 
@@ -72,7 +76,6 @@ const CreateProductForm = () => {
       howToUse: "",
       ingredients: [],
       inStock: true,
-      categoryIds: [],
     },
   });
 
@@ -105,49 +108,49 @@ const CreateProductForm = () => {
     }
   };
 
+  const currentImages = form.getValues("images") ?? [];
+
   // Helper functions for array fields
   const addImage = () => {
     if (newImage.trim()) {
-      const currentImages = form.getValues("images");
       form.setValue("images", [...currentImages, newImage]);
       setNewImage("");
     }
   };
 
   const removeImage = (index: number) => {
-    const currentImages = form.getValues("images");
     form.setValue(
       "images",
       currentImages.filter((_, i) => i !== index),
     );
   };
 
+  const currentBenefits = form.getValues("benefits") ?? [];
+
   const addBenefit = () => {
     if (newBenefit.trim()) {
-      const currentBenefits = form.getValues("benefits");
       form.setValue("benefits", [...currentBenefits, newBenefit]);
       setNewBenefit("");
     }
   };
 
   const removeBenefit = (index: number) => {
-    const currentBenefits = form.getValues("benefits");
     form.setValue(
       "benefits",
       currentBenefits.filter((_, i) => i !== index),
     );
   };
 
+  const currentIngredients = form.getValues("ingredients") ?? [];
+
   const addIngredient = () => {
     if (newIngredient.trim()) {
-      const currentIngredients = form.getValues("ingredients");
       form.setValue("ingredients", [...currentIngredients, newIngredient]);
       setNewIngredient("");
     }
   };
 
   const removeIngredient = (index: number) => {
-    const currentIngredients = form.getValues("ingredients");
     form.setValue(
       "ingredients",
       currentIngredients.filter((_, i) => i !== index),
@@ -164,6 +167,47 @@ const CreateProductForm = () => {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      <div className="mb-6 md:hidden">
+        <div className="mb-2 text-lg font-medium">
+          {activeTab === "basic" && "Información Básica"}
+          {activeTab === "description" && "Descripción"}
+          {activeTab === "images" && "Imágenes"}
+          {activeTab === "additional" && "Información Adicional"}
+          {activeTab === "categories" && "Categorías"}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="text-muted-foreground flex space-x-1 text-xs">
+            {["basic", "description", "images", "additional", "categories"].map(
+              (step, index) => (
+                <Button
+                  key={step}
+                  type="button"
+                  onClick={() => setActiveTab(step)}
+                  className={`flex h-7 w-7 items-center justify-center rounded-full ${
+                    activeTab === step
+                      ? "bg-primary text-primary-foreground font-medium"
+                      : "bg-muted hover:bg-muted/80"
+                  }`}
+                >
+                  {index + 1}
+                </Button>
+              ),
+            )}
+          </div>
+          <div className="text-muted-foreground text-xs">
+            Paso{" "}
+            {[
+              "basic",
+              "description",
+              "images",
+              "additional",
+              "categories",
+            ].indexOf(activeTab) + 1}{" "}
+            de 5
+          </div>
+        </div>
+      </div>;
       toast.success("Producto creado exitosamente", {
         description: "El producto ha sido agregado a tu inventario",
       });
@@ -190,95 +234,14 @@ const CreateProductForm = () => {
             className="w-full"
           >
             {/* Desktop Tabs - Refined for a cleaner look */}
-            <div className="hidden md:block">
-              {/* Subtle header for desktop */}
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-muted-foreground text-lg font-medium">
-                  {activeTab === "basic" && "Información Básica"}
-                  {activeTab === "description" && "Descripción"}
-                  {activeTab === "images" && "Imágenes"}
-                  {activeTab === "additional" && "Información Adicional"}
-                  {activeTab === "categories" && "Categorías"}
-                </h2>
-                <div className="text-muted-foreground text-sm">
-                  Paso{" "}
-                  {[
-                    "basic",
-                    "description",
-                    "images",
-                    "additional",
-                    "categories",
-                  ].indexOf(activeTab) + 1}{" "}
-                  de 5
-                </div>
-              </div>
-
-              {/* Clean, professional tabs */}
-              <TabsList className="mb-6 h-auto w-full">
-                <TabsTrigger value="basic" className="px-3 py-2 text-sm">
-                  Básico
-                </TabsTrigger>
-                <TabsTrigger value="description" className="px-3 py-2 text-sm">
-                  Descripción
-                </TabsTrigger>
-                <TabsTrigger value="images" className="px-3 py-2 text-sm">
-                  Imágenes
-                </TabsTrigger>
-                <TabsTrigger value="additional" className="px-3 py-2 text-sm">
-                  Adicional
-                </TabsTrigger>
-                <TabsTrigger value="categories" className="px-3 py-2 text-sm">
-                  Categorías
-                </TabsTrigger>
-              </TabsList>
-            </div>
+            {/* Tabs list with sections of the form */}
+            <TabsListComp activeTab={activeTab} />
 
             {/* Mobile Step Indicator */}
-            <div className="mb-6 md:hidden">
-              <div className="mb-2 text-lg font-medium">
-                {activeTab === "basic" && "Información Básica"}
-                {activeTab === "description" && "Descripción"}
-                {activeTab === "images" && "Imágenes"}
-                {activeTab === "additional" && "Información Adicional"}
-                {activeTab === "categories" && "Categorías"}
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="text-muted-foreground flex space-x-1 text-xs">
-                  {[
-                    "basic",
-                    "description",
-                    "images",
-                    "additional",
-                    "categories",
-                  ].map((step, index) => (
-                    <button
-                      key={step}
-                      type="button"
-                      onClick={() => setActiveTab(step)}
-                      className={`flex h-7 w-7 items-center justify-center rounded-full ${
-                        activeTab === step
-                          ? "bg-primary text-primary-foreground font-medium"
-                          : "bg-muted hover:bg-muted/80"
-                      }`}
-                    >
-                      {index + 1}
-                    </button>
-                  ))}
-                </div>
-                <div className="text-muted-foreground text-xs">
-                  Paso{" "}
-                  {[
-                    "basic",
-                    "description",
-                    "images",
-                    "additional",
-                    "categories",
-                  ].indexOf(activeTab) + 1}{" "}
-                  de 5
-                </div>
-              </div>
-            </div>
+            <MobileStepIndicator
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
 
             {/* Basic Information Tab */}
             <TabsContent
@@ -363,8 +326,9 @@ const CreateProductForm = () => {
                           min="0"
                           max="100"
                           placeholder="0"
-                          {...field}
                           className="h-12 w-full text-base"
+                          {...field}
+                          value={field.value ?? 0}
                         />
                       </FormControl>
                       <FormDescription className="mt-1 text-xs">
@@ -425,6 +389,7 @@ const CreateProductForm = () => {
                         placeholder="Instrucciones de uso"
                         className="min-h-[150px] w-full p-3 text-base"
                         {...field}
+                        value={field.value ?? ""}
                       />
                     </FormControl>
                     <FormDescription className="mt-1 text-xs">
@@ -505,9 +470,9 @@ const CreateProductForm = () => {
                   </Button>
                 </div>
 
-                {form.watch("images").length > 0 ? (
+                {(form.watch("images") || []).length > 0 ? (
                   <div className="mt-4 max-h-[180px] space-y-3 overflow-y-auto rounded-md border p-2">
-                    {form.watch("images").map((image, index) => (
+                    {(form.watch("images") || []).map((image, index) => (
                       <div
                         key={index}
                         className="bg-muted flex items-center justify-between rounded-md p-3"
@@ -579,9 +544,9 @@ const CreateProductForm = () => {
                   </Button>
                 </div>
 
-                {form.watch("benefits").length > 0 ? (
+                {(form.watch("benefits") || []).length > 0 ? (
                   <div className="mt-4 max-h-[180px] space-y-3 overflow-y-auto rounded-md border p-2">
-                    {form.watch("benefits").map((benefit, index) => (
+                    {(form.watch("benefits") || []).map((benefit, index) => (
                       <div
                         key={index}
                         className="bg-muted flex items-center justify-between rounded-md p-3"
@@ -627,25 +592,27 @@ const CreateProductForm = () => {
                   </Button>
                 </div>
 
-                {form.watch("ingredients").length > 0 ? (
+                {(form.watch("ingredients") || []).length > 0 ? (
                   <div className="mt-4 max-h-[180px] space-y-3 overflow-y-auto rounded-md border p-2">
-                    {form.watch("ingredients").map((ingredient, index) => (
-                      <div
-                        key={index}
-                        className="bg-muted flex items-center justify-between rounded-md p-3"
-                      >
-                        <span className="text-sm">{ingredient}</span>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => removeIngredient(index)}
-                          className="h-10 w-10 flex-shrink-0"
+                    {(form.watch("ingredients") || []).map(
+                      (ingredient, index) => (
+                        <div
+                          key={index}
+                          className="bg-muted flex items-center justify-between rounded-md p-3"
                         >
-                          <Trash className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
+                          <span className="text-sm">{ingredient}</span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeIngredient(index)}
+                            className="h-10 w-10 flex-shrink-0"
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ),
+                    )}
                   </div>
                 ) : (
                   <p className="text-muted-foreground mt-4 text-sm italic">
