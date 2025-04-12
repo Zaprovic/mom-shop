@@ -7,7 +7,7 @@ export default function Home() {
     <div className="mx-5 sm:mx-14">
       <HeroSection />
 
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Cargando...</div>}>
         <ProductsSection />
       </Suspense>
     </div>
