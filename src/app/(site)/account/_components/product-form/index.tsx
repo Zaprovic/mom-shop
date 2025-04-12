@@ -162,66 +162,34 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
     );
   };
 
-  // Form submission handler
   const onSubmit = async (data: FormValues) => {
     try {
-      // Add your API call to create product here
-      console.log("Product data:", data);
+      if (!user || !user.id) {
+        throw new Error("User not authenticated");
+      }
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const result = await createProductAction({
+        ...data,
+        userId: user.id,
+      });
 
-      <div className="mb-6 md:hidden">
-        <div className="mb-2 text-lg font-medium">
-          {activeTab === "basic" && "Información Básica"}
-          {activeTab === "description" && "Descripción"}
-          {activeTab === "images" && "Imágenes"}
-          {activeTab === "additional" && "Información Adicional"}
-          {activeTab === "categories" && "Categorías"}
-        </div>
+      console.log("Server action result:", result);
 
-        <div className="flex items-center justify-between">
-          <div className="text-muted-foreground flex space-x-1 text-xs">
-            {["basic", "description", "images", "additional", "categories"].map(
-              (step, index) => (
-                <Button
-                  key={step}
-                  type="button"
-                  onClick={() => setActiveTab(step)}
-                  className={`flex h-7 w-7 items-center justify-center rounded-full ${
-                    activeTab === step
-                      ? "bg-primary text-primary-foreground font-medium"
-                      : "bg-muted hover:bg-muted/80"
-                  }`}
-                >
-                  {index + 1}
-                </Button>
-              ),
-            )}
-          </div>
-          <div className="text-muted-foreground text-xs">
-            Paso{" "}
-            {[
-              "basic",
-              "description",
-              "images",
-              "additional",
-              "categories",
-            ].indexOf(activeTab) + 1}{" "}
-            de 5
-          </div>
-        </div>
-      </div>;
+      if (!result.success) {
+        throw new Error(
+          "error" in result ? result.error : "Failed to create product",
+        );
+      }
+
       toast.success("Producto creado exitosamente", {
         description: "El producto ha sido agregado a tu inventario",
       });
 
-      // Reset form after successful submission
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to create product:", error);
       toast.error("Error al crear el producto", {
-        description: "Por favor intenta nuevamente",
+        description: error.message || "Por favor intenta nuevamente",
       });
     }
   };
