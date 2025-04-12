@@ -5,7 +5,7 @@ type props = {
 };
 
 const ProductsPage = async ({ searchParams }: props) => {
-  return <div>ProductsPage</div>;
+  return <div>Pagina de productos</div>;
 };
 
 export default ProductsPage;
