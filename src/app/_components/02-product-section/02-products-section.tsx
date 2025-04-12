@@ -9,7 +9,7 @@ const ProductsSection = () => {
           Nuestros productos
         </h2>
         <p className="mb-12 text-center">
-          Descubre los productos de nuestra coleccion y encuentra lo que mas te
+          Descubre los productos de nuestra colección y encuentra lo que mas te
           gusta
         </p>
 
@@ -20,7 +20,7 @@ const ProductsSection = () => {
             href={"/products"}
             className="border-primary/10 hover:bg-primary hover:text-primary-foreground inline-block rounded-lg border px-6 py-2 transition"
           >
-            Ver todos los productos
+            Ver más productos
           </Link>
         </div>
       </div>
