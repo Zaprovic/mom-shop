@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Plus, Trash } from "lucide-react";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -53,15 +53,15 @@ type props = {
 };
 
 const CreateProductForm = ({ categories: CATEGORIES }: props) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { getUser } = useKindeBrowserClient();
+  const user = getUser();
+
   const [activeTab, setActiveTab] = useState("basic");
 
-  // State for array inputs
   const [newImage, setNewImage] = useState("");
   const [newBenefit, setNewBenefit] = useState("");
   const [newIngredient, setNewIngredient] = useState("");
 
-  // Initialize form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -76,8 +76,13 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
       howToUse: "",
       ingredients: [],
       inStock: true,
+      categoryIds: [],
     },
   });
+
+  const {
+    formState: { isSubmitting },
+  } = form;
 
   // Navigation between tabs
   const goToNextTab = () => {
@@ -159,7 +164,6 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
 
   // Form submission handler
   const onSubmit = async (data: FormValues) => {
-    setIsSubmitting(true);
     try {
       // Add your API call to create product here
       console.log("Product data:", data);
@@ -219,8 +223,6 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
       toast.error("Error al crear el producto", {
         description: "Por favor intenta nuevamente",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
