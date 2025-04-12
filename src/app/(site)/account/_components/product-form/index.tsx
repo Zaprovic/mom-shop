@@ -161,7 +161,7 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
 
       console.log("Server action result:", result);
 
-      if (!result.success) {
+      if (!result.wasSuccessful) {
         throw new Error(
           "error" in result ? result.error : "Failed to create product",
         );
