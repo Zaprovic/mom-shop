@@ -8,8 +8,6 @@ const User = async () => {
 
   const user = await getUser();
 
-  // database call to neon to add user if not exists
-  //
   if (!user) {
     return (
       <h1 className="text-2xl font-bold -tracking-wider sm:text-3xl">
@@ -20,19 +18,16 @@ const User = async () => {
 
   const _ = await db
     .insert(usersTable)
-    .values({
-      id: user.id,
-      name: user.given_name,
-      email: user.email,
-    })
+    .values([
+      {
+        id: user.id,
+        name: user.given_name ?? "",
+        email: user.email ?? "",
+      },
+    ])
     .onConflictDoNothing()
     .returning();
 
-  await new Promise((res) => {
-    setTimeout(() => {
-      res("resolved");
-    }, 1000);
-  });
   return (
     <h1 className="text-2xl font-bold -tracking-wider sm:text-3xl">
       Hola, {userGivenName}
