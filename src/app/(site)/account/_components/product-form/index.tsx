@@ -21,10 +21,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import TabsListComp from "./tabs-list-comp";
-import MobileStepIndicator from "./mobile-step-indicator";
 import { insertProductSchema } from "@/schemas";
 import { SelectCategoryType } from "@/types";
+import TabsListComp from "./_components/tabs-list-comp";
+import MobileStepIndicator from "./_components/mobile-step-indicator";
 
 // Define product schema for form validation
 // const formSchema = z.object({
