@@ -21,28 +21,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { insertProductSchema } from "@/schemas";
+import { productFormSchema } from "@/schemas";
 import { SelectCategoryType } from "@/types";
 import TabsListComp from "./_components/tabs-list-comp";
 import MobileStepIndicator from "./_components/mobile-step-indicator";
+import { createProductAction } from "@/actions/products";
+import { useForm } from "react-hook-form";
 
-// Define product schema for form validation
-// const formSchema = z.object({
-//   name: z.string().min(1, "Product name is required"),
-//   price: z.coerce.number().positive("Price must be positive"),
-//   brand: z.string().min(1, "Brand name is required"),
-//   mainImage: z.string().min(1, "Main image URL is required"),
-//   description: z.string().min(10, "Description must be at least 10 characters"),
-//   discountPercentage: z.coerce.number().min(0).max(100).default(0),
-//   images: z.array(z.string()).default([]),
-//   benefits: z.array(z.string()).default([]),
-//   howToUse: z.string().optional(),
-//   ingredients: z.array(z.string()).default([]),
-//   inStock: z.boolean().default(true),
-//   categoryIds: z.array(z.number()).min(1, "At least one category is required"),
-// });
-
-const formSchema = insertProductSchema.omit({
+const formSchema = productFormSchema.omit({
   userId: true,
 });
 
@@ -203,17 +189,13 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            {/* Desktop Tabs - Refined for a cleaner look */}
-            {/* Tabs list with sections of the form */}
             <TabsListComp activeTab={activeTab} />
 
-            {/* Mobile Step Indicator */}
             <MobileStepIndicator
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />
 
-            {/* Basic Information Tab */}
             <TabsContent
               value="basic"
               className="space-y-6 pt-2 focus:outline-none"
@@ -679,7 +661,7 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
                   <FormItem className="mt-6 flex flex-row items-center space-y-0 space-x-3 rounded-md border p-4">
                     <FormControl>
                       <Checkbox
-                        checked={field.value}
+                        checked={field.value ?? false}
                         onCheckedChange={field.onChange}
                         className="h-5 w-5"
                       />
