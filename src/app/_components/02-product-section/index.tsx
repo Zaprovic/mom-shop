@@ -1,5 +1,5 @@
 import Link from "next/link";
-import CarouselSection from "./carousel";
+import CarouselSection from "./carousel-section";
 
 const ProductsSection = () => {
   return (
