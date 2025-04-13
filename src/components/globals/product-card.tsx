@@ -77,7 +77,7 @@ const ProductCard = ({ product, inCart, toggleItem }: props) => {
         )}
       </div>
 
-      <figure className="relative h-64 w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
+      <figure className="relative h-64 w-full overflow-hidden bg-gray-50 dark:bg-neutral-800">
         {inCart && product.inStock && (
           <div className="absolute bottom-0 left-0 z-10 bg-emerald-500 px-2 py-1 text-xs text-white shadow-sm dark:bg-emerald-600">
             <CheckIcon className="mr-1 inline-block size-3" />
