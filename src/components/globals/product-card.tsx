@@ -71,7 +71,7 @@ const ProductCard = ({ product, inCart, toggleItem }: props) => {
             {inCart ? (
               <MinusIcon className="size-4 text-gray-100 dark:text-gray-300" />
             ) : (
-              <PlusIcon className="size-4 text-gray-100 dark:text-gray-300" />
+              <PlusIcon className="size-4 text-gray-900 dark:text-gray-300" />
             )}
           </Button>
         )}
@@ -108,7 +108,7 @@ const ProductCard = ({ product, inCart, toggleItem }: props) => {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between p-4 pt-0">
-        <div className="flex flex-col">
+        <div className="flex flex-col text-sm">
           {product.discountPercentage && product.discountPercentage > 0 ? (
             <>
               <p className="text-primary dark:text-secondary-foreground font-semibold">
