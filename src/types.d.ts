@@ -5,3 +5,8 @@ export type InsertProductType = typeof productsTable.$inferInsert;
 
 export type SelectCategoryType = typeof categoriesTable.$inferSelect;
 export type InsertCategoryType = typeof categoriesTable.$inferInsert;
+
+export type SelectProductWithCategoryType =
+  typeof productsTable.$inferSelect & {
+    categories: SelectCategoryType[];
+  };
