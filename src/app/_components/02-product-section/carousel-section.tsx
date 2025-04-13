@@ -55,12 +55,26 @@ const CarouselSection = async () => {
     return productsWithCategories;
   }
 
-  const ps = await getProductsWithCategories();
+  // Get the products with categories
+  const products = await getProductsWithCategories();
+
+  // Shuffle the products array to display in random order
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Apply shuffling to the products array
+  const randomizedProducts = shuffleArray(products);
 
   return (
     <CarouselProvider delay={5000}>
       <CarouselContent className="-ml-4">
-        {ps.map((p, idx) => (
+        {randomizedProducts.map((p, idx) => (
           <CarouselItem
             key={idx}
             className="pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
