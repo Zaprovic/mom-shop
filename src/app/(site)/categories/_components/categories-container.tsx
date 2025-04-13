@@ -12,7 +12,7 @@ type props = {
 
 const CategoriesContainer = ({ categories }: props) => {
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
       {categories.map((category, index) => (
         <motion.div
           key={category.id}
