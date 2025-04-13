@@ -45,13 +45,13 @@ const ProductCard = ({ product, inCart, toggleItem }: props) => {
         </div>
       )}
       <div className="absolute top-2 right-2 z-20 flex gap-1">
-        <Button
+        {/* <Button
           variant={"secondary"}
           size={"icon"}
           className="size-8 rounded-full opacity-90 backdrop-blur-sm hover:opacity-100"
         >
           <HeartIcon className="dar:text-gray-300 size-4 text-gray-600 hover:text-rose-500 dark:hover:text-rose-400" />
-        </Button>
+        </Button> */}
 
         {product.inStock && (
           <Button
