@@ -122,7 +122,7 @@ const ProductCard = ({ product, inCart, toggleItem }: props) => {
             </>
           ) : (
             <p className="text-primary dark:text-primary-foreground font-semibold">
-              {product.price}
+              {formatCurrency(product.price)}
             </p>
           )}
         </div>
