@@ -2,6 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,10 +14,37 @@ import {
 import { cn, formatCurrency } from "@/lib/utils";
 import { SelectProductType } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { EditIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import {
+  ArrowUpDownIcon,
+  EditIcon,
+  MoreHorizontalIcon,
+  Trash2Icon,
+} from "lucide-react";
 import Image from "next/image";
 
 export const columns: ColumnDef<SelectProductType>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "mainImage",
     header: "Imagen",
@@ -37,7 +65,17 @@ export const columns: ColumnDef<SelectProductType>[] = [
   },
   {
     accessorKey: "name",
-    header: "Producto",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Producto
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "brand",
@@ -45,7 +83,17 @@ export const columns: ColumnDef<SelectProductType>[] = [
   },
   {
     accessorKey: "price",
-    header: "Precio",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant={"ghost"}
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Precio
+          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const price = row.getValue("price");
       const formattedPrice = formatCurrency(price as number);
