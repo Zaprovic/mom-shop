@@ -1,17 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { PlusCircleIcon } from "lucide-react";
 import User from "./_components/user";
 import { Suspense } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import CreateProductForm from "./_components/product-form";
-import CategoryCreationForm from "./_components/category-form";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { db } from "@/db";
 import { productsTable, categoriesTable } from "@/db/schema";
 import { count, eq } from "drizzle-orm";
@@ -51,47 +40,29 @@ const AccountPage = async () => {
     .where(eq(productsTable.userId, userId));
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-      <div className="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-7xl px-4 pt-6 pb-12 sm:px-6 lg:px-8">
+      <div className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
         <Suspense fallback={<div>Cargando...</div>}>
           <User />
         </Suspense>
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <Dialog modal>
-            <DialogTrigger asChild>
-              <Button className="w-full sm:w-auto" size={"sm"}>
-                <PlusCircleIcon className="mr-2 h-4 w-4" />
-                <span className="-tracking-wider whitespace-nowrap">
-                  Agregar nuevo producto
-                </span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Productos</DialogTitle>
-              </DialogHeader>
-              <DialogDescription className="hidden"></DialogDescription>
-              <CreateProductForm categories={categories} />
-            </DialogContent>
-          </Dialog>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="w-full sm:w-auto" size={"sm"}>
-                <PlusCircleIcon className="mr-2 h-4 w-4" />
-                <span className="-tracking-wider whitespace-nowrap">
-                  Agregar nueva categoria
-                </span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Categorias</DialogTitle>
-              </DialogHeader>
-              <CategoryCreationForm />
-              <DialogDescription className="hidden"></DialogDescription>
-            </DialogContent>
-          </Dialog>
+      </div>
+
+      <Cards stats={stats} />
+
+      <div className="mt-8">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-xl font-bold">Tus Productos</h2>
+          <Button variant="outline" size="sm">
+            <RefreshCwIcon className="mr-2 h-4 w-4" /> Refrescar
+          </Button>
         </div>
+        <Suspense
+          fallback={
+            <div className="py-10 text-center">Cargando productos...</div>
+          }
+        >
+          <DataTable columns={columns} data={products} />
+        </Suspense>
       </div>
     </div>
   );
