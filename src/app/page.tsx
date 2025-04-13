@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import HeroSection from "./_components/01-hero-section";
 import ProductsSection from "./_components/02-product-section";
 import { Skeleton } from "@/components/ui/skeleton";
+import CategoriesSection from "./_components/03-categories-section";
 
 export default function Home() {
   return (
@@ -44,6 +45,8 @@ export default function Home() {
       >
         <ProductsSection />
       </Suspense>
+
+      <CategoriesSection />
     </div>
   );
 }
