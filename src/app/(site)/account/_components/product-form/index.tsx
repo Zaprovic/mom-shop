@@ -97,6 +97,10 @@ const CreateProductForm = ({ categories: CATEGORIES }: props) => {
 
       const result = await createProductAction({
         ...data,
+        name: data.name.trim(),
+        brand: data.brand.trim(),
+        description: data.description.trim(),
+        mainImage: data.mainImage.trim(),
         userId: user.id,
       });
 
