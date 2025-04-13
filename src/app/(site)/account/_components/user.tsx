@@ -9,11 +9,7 @@ const User = async () => {
   const user = await getUser();
 
   if (!user) {
-    return (
-      <h1 className="text-2xl font-bold -tracking-wider sm:text-3xl">
-        No user
-      </h1>
-    );
+    return null;
   }
 
   const _ = await db
