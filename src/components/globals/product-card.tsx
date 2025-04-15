@@ -3,14 +3,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { cn, formatCurrency } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import {
-  AlertCircleIcon,
-  CheckIcon,
-  HeartIcon,
-  Minus,
-  MinusIcon,
-  PlusIcon,
-} from "lucide-react";
+import { AlertCircleIcon, CheckIcon, MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
