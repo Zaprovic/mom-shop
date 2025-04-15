@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "prod": "pnpm run build && pnpm run start",
     "lint": "next lint",
     "prepare": "husky",
     "commit": "git-cz",
