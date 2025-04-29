@@ -1,3 +1,5 @@
+// dummy comment
+
 import { categoriesTable, productsTable } from "./db/schema";
 
 export type SelectProductType = typeof productsTable.$inferSelect;
