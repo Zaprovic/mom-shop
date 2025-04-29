@@ -1,4 +1,4 @@
-// dummy comment
+// dummy comments
 
 import { categoriesTable, productsTable } from "./db/schema";
 
