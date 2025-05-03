@@ -16,13 +16,13 @@ import {
   getSingleProductWithCategory,
 } from "@/lib/db";
 
-export async function generateStaticParams() {
-  const products = await getProductsWithCategories();
-
-  return products.map((p) => ({
-    id: p.id.toString(),
-  }));
-}
+// export async function generateStaticParams() {
+//   const products = await getProductsWithCategories();
+//
+//   return products.map((p) => ({
+//     id: p.id.toString(),
+//   }));
+// }
 
 export default async function ProductPage({
   params,
