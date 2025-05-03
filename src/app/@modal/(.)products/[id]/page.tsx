@@ -151,7 +151,7 @@ export default async function ProductModal({
               variant="outline"
               className="border-primary text-primary flex items-center justify-center gap-2"
             >
-              <Heart size={18} />
+              {/* <Heart size={18} /> */}
               Favoritos
             </Button>
           </div>
