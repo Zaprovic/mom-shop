@@ -3,15 +3,8 @@ import CarouselProvider from "@/components/providers/carousel-provider";
 import { CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { db } from "@/db";
 import { categoriesTable } from "@/db/schema";
+import { hashString } from "@/lib/utils";
 import React from "react";
-
-const hashString = (str: string): number => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return Math.abs(hash);
-};
 
 const CategoriesSection = async () => {
   const categories = await db.select().from(categoriesTable);
@@ -25,7 +18,6 @@ const CategoriesSection = async () => {
         <CarouselProvider delay={4000}>
           <CarouselContent>
             {categories.map((category) => {
-              // Generate a unique but consistent color index for this category
               const colorIndex = hashString(category.name);
 
               return (
